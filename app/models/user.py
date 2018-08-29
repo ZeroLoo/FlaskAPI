@@ -2,7 +2,7 @@
 from sqlalchemy import Column, Integer, String, SmallInteger
 from werkzeug.security import generate_password_hash
 
-from app.models.base import Base
+from app.models.base import Base, db
 
 __author__ = 'ZeroLoo'
 
@@ -19,5 +19,14 @@ class User(Base):
         return self._password
 
     @property.setter
-    def password(self,raw):
-        self._password=generate_password_hash(raw)
+    def password(self, raw):
+        self._password = generate_password_hash(raw)
+
+    @classmethod
+    def register_by_email(cls, nickname, account, secret):
+        with db.auto_commit():
+            user = User()
+            user.nickname = nickname
+            user.email = account
+            user.password = secret
+            db.session.add(user)
