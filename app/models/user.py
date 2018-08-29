@@ -18,7 +18,7 @@ class User(Base):
     def password(self):
         return self._password
 
-    @property.setter
+    @password.setter
     def password(self, raw):
         self._password = generate_password_hash(raw)
 
